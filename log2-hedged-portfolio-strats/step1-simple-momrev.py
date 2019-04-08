@@ -119,7 +119,7 @@ Interpretation:
 
 df_shares = df[['Date','Symbol']]
 
-thresholds = (0, 0.1, 0.5, 1, 2, 3, 5, 10, 20)
+thresholds = (0, 0.1, 0.5, 1, 2, 3, 5, 10, 20, 1000)
 
 number_of_colors = len(thresholds)
 colors = ["#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])
@@ -135,7 +135,7 @@ for i,threshold in enumerate(thresholds):
                                      else (-1/8 if x < 0 and x > -threshold
                                                 else 1/8)))
     df_shares['Weights'] = weights
-    df_shares1 = df_shares[df_shares['Symbol'] != '^GSPC'][df['Date'].apply(lambda t:t.year<=2008)]
+    df_shares1 = df_shares.iloc[:int(df_shares.shape[0]/2)][df_shares['Symbol'] != '^GSPC']
     
     df_pnl_curve_daily = get_daily_pnl_curve(df_shares = df_shares1,
                                              df_returns = df)
@@ -148,7 +148,7 @@ for i,threshold in enumerate(thresholds):
                                      else (-1/8 if x < 0 and x > -threshold
                                                 else 1/8)))
     df_shares['Weights'] = weights
-    df_shares2 = df_shares[df_shares['Symbol'] != '^GSPC'][df['Date'].apply(lambda t:t.year > 2008)]
+    df_shares2 = df_shares.iloc[int(df_shares.shape[0]/2):][df_shares['Symbol'] != '^GSPC']
     
     df_pnl_curve_daily = get_daily_pnl_curve(df_shares = df_shares2,
                                              df_returns = df)
